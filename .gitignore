@@ -1,0 +1,60 @@
+# =========================================
+# Frontend (Next.js)
+# =========================================
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/coverage/
+frontend/*.log
+frontend/.env*
+frontend/.pnp
+frontend/.pnp.*
+frontend/.yarn/*
+!frontend/.yarn/patches
+!frontend/.yarn/plugins
+!frontend/.yarn/releases
+!frontend/.yarn/versions
+
+# =========================================
+# Backend (Spring Boot)
+# =========================================
+backend/target/
+backend/*.log
+backend/.env*
+backend/.idea/
+backend/.vscode/
+
+# =========================================
+# Docker / MySQL
+# =========================================
+docker/mysql/data/
+docker/mysql/logs/
+docker/mysql/conf.d/
+docker/mysql/initdb.d/
+
+# =========================================
+# Common
+# =========================================
+.DS_Store
+*.pem
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================================
+# Env files (root)
+# =========================================
+.env*
+
+# =========================================
+# Vercel
+# =========================================
+.vercel/
+
+# =========================================
+# TypeScript
+# =========================================
+*.tsbuildinfo
+next-env.d.ts
