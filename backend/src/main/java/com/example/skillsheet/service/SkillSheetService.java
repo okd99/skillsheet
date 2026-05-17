@@ -2,9 +2,12 @@ package com.example.skillsheet.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.example.skillsheet.entity.SkillSheet;
 import com.example.skillsheet.repository.SkillSheetRepository;
 
+@Service
 public class SkillSheetService {
 
     private final SkillSheetRepository repository;

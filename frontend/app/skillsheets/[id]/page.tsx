@@ -1,106 +1,76 @@
-'use client';
-
+import type { SkillSheet } from '@/types/skillsheet';
 import Link from 'next/link';
-import { CalendarDays, Users, Layers, Wrench, FileText } from 'lucide-react';
 
-export default function SkillSheetDetailPage() {
+type Props = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+export default async function SkillSheetDetailPage({ params }: Props) {
+  const { id } = await params; // ← Next.js 16 では必須
+
+  const res = await fetch(`http://localhost:8080/api/skillsheets/${id}`, {
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    return (
+      <div className="p-8">
+        <p>データが見つかりませんでした。</p>
+        <Link href="/skillsheets" className="text-blue-600 underline">
+          ← 一覧に戻る
+        </Link>
+      </div>
+    );
+  }
+
+  const sheet: SkillSheet = await res.json();
+
   return (
     <div className="p-8 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">スキルシート詳細</h1>
+      <h1 className="text-3xl font-bold mb-6">{sheet.title}</h1>
 
-      <div className="bg-white p-8 rounded-xl shadow-md">
-        <form className="space-y-6">
-          <div>
-            <label className="flex items-center gap-2 font-semibold mb-1">
-              <FileText size={20} className="text-blue-600" />
-              タイトル
-            </label>
-            <input
-              className="border p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-400 transition"
-              placeholder="例: 医療システム開発"
-            />
-          </div>
+      <div className="bg-white p-6 rounded-xl shadow space-y-4">
+        <p>
+          <span className="font-semibold">期間：</span>
+          {sheet.periodFrom} ~ {sheet.periodTo}
+        </p>
 
-          <div>
-            <label className="flex items-center gap-2 font-semibold mb-1">
-              <CalendarDays size={20} className="text-blue-600" />
-              期間
-            </label>
-            <div className="flex gap-3">
-              <input
-                type="date"
-                className="border p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-400 transition"
-              />
-              <span className="self-center">~</span>
-              <input
-                type="date"
-                className="border p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-400 transition"
-              />
-            </div>
-          </div>
+        <p>
+          <span className="font-semibold">メンバー：</span>
+          {sheet.members}
+        </p>
 
-          <div>
-            <label className="flex items-center gap-2 font-semibold mb-1">
-              <Users size={20} className="text-blue-600" />
-              メンバー
-            </label>
-            <input
-              className="border p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-400 transition"
-              placeholder="例: 3名"
-            />
-          </div>
+        <p>
+          <span className="font-semibold">スタック：</span>
+          {sheet.stack}
+        </p>
 
-          <div>
-            <label className="flex items-center gap-2 font-semibold mb-1">
-              <Layers size={20} className="text-blue-600" />
-              スタック
-            </label>
-            <textarea
-              className="border p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-400 transition"
-              rows={2}
-              placeholder="例: React, Next.js, Spring Boot, MySQL"
-            />
-          </div>
+        <p>
+          <span className="font-semibold">ツール：</span>
+          {sheet.tools}
+        </p>
 
-          <div>
-            <label className="flex items-center gap-2 font-semibold mb-1">
-              <Wrench size={20} className="text-blue-600" />
-              ツール
-            </label>
-            <textarea
-              className="border p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-400 transition"
-              rows={2}
-              placeholder="例: GitHub, Docker, Jira"
-            />
-          </div>
-
-          <div>
-            <label className="flex items-center gap-2 font-semibold mb-1">
-              <FileText size={20} className="text-blue-600" />
-              業務内容
-            </label>
-            <textarea
-              className="border p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-400 transition"
-              rows={4}
-              placeholder="業務内容を入力"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-          >
-            保存
-          </button>
-        </form>
+        <p>
+          <span className="font-semibold">業務内容：</span>
+          <br />
+          {sheet.description}
+        </p>
       </div>
 
-      <Link
-        href="/skillsheets"
-        className="block mt-6 text-blue-600 underline hover:text-blue-800"
-      >
-        ← 一覧に戻る
-      </Link>
+      <div className="mt-6 flex gap-4">
+        <Link
+          href={`/skillsheets/${sheet.id}/edit`}
+          className="px-4 py-2 bg-yellow-500 text-white rounded-lg"
+        >
+          編集
+        </Link>
+
+        <Link href="/skillsheets" className="px-4 py-2 bg-gray-300 rounded-lg">
+          ← 一覧に戻る
+        </Link>
+      </div>
     </div>
   );
 }
