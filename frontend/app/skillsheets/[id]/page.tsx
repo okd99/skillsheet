@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { SkillSheet } from '@/types/skillsheet';
+import DeleteButton from './delete-button';
+import Link from 'next/link';
 
 export default function SkillSheetEditPage({
   params,
@@ -153,6 +155,14 @@ export default function SkillSheetEditPage({
           更新する
         </button>
       </form>
+
+      <div className="mt-6 flex gap-4">
+        <DeleteButton id={sheet.id} />
+
+        <Link href="/skillsheets" className="px-4 py-2 bg-gray-300 rounded-lg">
+          ← 一覧に戻る
+        </Link>
+      </div>
     </div>
   );
 }
